@@ -1,0 +1,91 @@
+GIT E GITHUB
+
+INDOW
+dir = listar
+cd(change directory)
+cls(clear screen) = limpar tela
+mkdir = criar pasta
+echo = printa de volta o que for escrito no terminal
+> = redirecionador de fluxo; se feito: echo hello > hello.txt = criar um arquivo hello.txt
+del = deleta apenas arquivos
+rmdir = remove directory(deleta tudo tudo)
+>>/S	/Q	pra que serve?<<
+
+LINUX
+ls = listar
+cd; 
+cd .. = retrocede um nível
+mkdir = criar pasta
+-rm ;rf = remover e remover recursivamente(todas subpastas) e f de force(sem perguntar
+
+GIT:
+
+-SHA1(Secure hash Algorithm):
+> algorítmo de encriptação(tipo o caesar). Gera um idetificador de 40 digitos
+>uma forma curtas de representar um arquivo.
+>se mudar uma letra, muda o sha1
+OBJ. FUNDAMENTAIS
+-Blobs:
+>bloco básico de composição
+>contém: blob, tamanho do cont. \0 e conteúdo e sha1 do arq.
+
+-Trees: armazena blobs, gera um sha1 da arvore
+
+-Commits
+> aponta p/ tree, autor e parente(anterior); tem mensagem e gera um sha1(o sha1 do commit = o hash de toda essa informação)
+
+-SIST. DISTRIBUÍDO
+-SEGURANÇA
+
+Iniciar Git:
+-git init: cria-se um repositório
+>a flag -a mostra arq. ocultos(ex: /.git)
+
+Iniciar Versionamento:
+-git add
+-git add * ou .> pega tudo que foi modificado e add p staged
+-git add.
+>markdown no git = # título de nível(# n1; ## n2 etc)
+
+Criar um commit
+-git commit: move para o repositório local
+>git commit -m "commit inicial"
+-m = passa uma mensagem
+
+CICLO DE VIDA/ESTÁGIO 
+Conceitos de tracked e untracked
+Untracked: arquivos q foram criados porém ainda não são rastreados pelo git
+> git init(está untracked)
+
+Tracked: Arquivos rastreados pelo git
+>Unmodified = arq. não modificado
+>Modified = arq. modificado
+>Staged = arq. pronto pra uso
+>it add = move o arq. de Untracked p Staged
+
+Obs: 
+-O git commit retorna os arquivos para unmodified(salva/envelopa/cria um snapshot[foto] do código)
+-git status revela se há commits e etc
+
+git remote add origin <endereço> :
+> empurra os arquivos do repositório local para a origem remota.
+obs: 
+-comando dado dentro da pasta(repositório local)[dentro do bash] que deseja empurra pro repositório remoto
+- origin é apenas um "apelido" dado ao link/endereço do github
+
+git remote -v = listar repositórios cadastrados
+git push origin master:
+git empurra origin para o master 
+
+=============
+CONFLITOS
+
+conflito de Merge: quando acotecem duas alterações na mesma linha, sendo editado por mais de uma pessoa;
+é preciso primeiro baixar o que está no github e só então alterar.
+
+comando PULL:
+git pull origin master
+
+para clonar reposiótio do git:
+
+git clone <url do repositório>

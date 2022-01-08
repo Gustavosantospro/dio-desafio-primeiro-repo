@@ -1,0 +1,152 @@
+Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;
+
+COMANDOS:
+
+- create database <nomedobanco> : criando banco de dado
+- use <nomedobanco>: mudar para banco <nomedobanco>
+- alter database <nomeantigo> modify name = <nomeatual>;: alterar nome do banco
+- drop database <nomedobanco>;> excluir banco de dados
+- create table <nomedatable>: criar tabela
+
+Obs: 
+- add comentário: -- // atalho control kc e ku
+- só é possível dropar um banco se voce não estiver usando o banco
+
+===============// AULA DE FRED // =============
+
+
+COMANDOS DDL:
+- comandos para criar, alterar e excluir objetos.
+
+DDL EM TABELAS:
+-create table <nomeDaTabela>; > cria tabela
+
+=============//===============//============
+
+> exemplo:
+
+CRIANDO TABELAS:
+
+create table teste
+(
+	coluna1 varchar(50) null,
+	coluna2 char(10) not null,
+	coluna3 int,
+)
+
+APAGANDO TABELAS:
+
+- drop table <nomedatabela> : apagar tabela
+
+
+ALTERANDO NOME DE COLUNA DE TABELA:
+
+exec sp_rename 'dbo.nomedatabela.nomedacoluna', 'novonomedacolunaapenas'
+GO
+
+
+obs: 
+- sp = story procedure
+
+ADCIONAR COLUNA EM TABELA JÁ PRONTA:
+
+- alter table <nomedatabela> add <nomedanovacoluna> int/float/varchar etc
+
+
+
+tipos de dados:
+int
+bigint
+float
+varchar(número)
+char(número) = armazena o número exato de n°(quando não houver, aceita espaços em branco)
+bit = 0 ou 1
+null = aceita nulos(ausência de valores)
+not null = ñ aceita nulos
+
+
+Insert:
+
+insert into <nomedatabela> (col1, col2, col3) values (1, 'gustavo','F');
+
+> exemplo:
+	insert into Clientes (codigo, nome, tipoPessoa) values (1, 'Gustavo', 'F');
+	ou seja: insira dentro da tabela Clientes, nas colunas: código, nome e Tipopessoa
+	os valores: 1, 'Gustavo', 'F')¹
+
+Obs:
+-no final do insert tem que ter >;(ponto e virgula)
+-se selecionarmos tabela e apertar alt + f1, vemos info.
+ex: select * from clientes ... Alt+f1
+- ¹ no insert, pode ser omitido os nomes das colunas e o into.
+
+
+Update:
+> primeiro é preciso selecionar o que se deseja mudar:
+
+select * 
+from Client
+
+> depois dar um update <nomedatabela>, seguido de um set
+para configurar as alterações e depois um where, para
+específicar/identificar onde serão alterações.
+
+update Client
+set		Nome = 'Outro'
+where Cod= 5;
+
+delete:
+delete 
+from 	<nomedatabela>
+where <nomedacoluna>
+
+
+
+ESTRUTURA DE DECISÃO:
+
+select *,
+	case
+		when <nomecoluna> = <parametro> then <novoparamentro>
+		when <nomecoluna> = <parametro> then <novoparametro>
+		else <parametrocasonenhumcorresponda>
+	end
+from <tabela>
+
+
+DECLARANDO CHAVE PRIMÁRIA:
+
+> alter table <nomedatabela> add constraint pk_cliente primary key(coluna)
+
+exemplo:
+
+> alter table Client add constraint pk_cliente primary key(cpf)
+
+obs: 
+- constraint = regra/limitação
+- pk_cliente = nome da regra
+- primary key = tipo da regras
+
+DECLARANDO CHAVE SECUNDÁRIA:
+
+> alter table <nomedatabela> add constraint fk_<nomedacolunafk> foreign key (nomedacolunafk) references <nomedatabelareferenciada> (referencia)
+
+> uma chave estrangeira sempre será uma cópia de uma chave primária
+de mesmo tipo, de mesma quantidade.
+
+
+Obs: 
+-bancos relacionais são altamente tipados.
+-os tipos de dados influênciam na memórias.
+
+
+DECLARANDO CHAVE SECUNDÁRIA:
+
+> alter table 
+
+
+
+Obs:
+uma chave estrangeira sempre será uma cópia de uma 
+chave primária.
+
+

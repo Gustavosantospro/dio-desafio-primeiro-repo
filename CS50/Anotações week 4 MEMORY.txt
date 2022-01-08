@@ -1,0 +1,351 @@
+Pointers
+A variable that stores an address is called a pointer, 
+which we can think of as a value that “points” to a location in 
+memory. In C, pointers can refer to specific types of values.
+We can use the * operator (in an unfortunately confusing way) to 
+declare a variable that we want to be a pointer:
+#include <stdio.h>
+
+int main(void)
+{
+   int n = 50;
+   int *p = &n;
+   printf("%p\n", p);
+}
+
+ENTENDENDO EXEMPLO:
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+
+    char *t = malloc(strlen(s) + 1);
+
+    for (int i = 0, n = strlen(s); i < n + 1; i++)
+    {
+        t[i] = s[i];
+    }
+
+    t[0] = toupper(t[0]);
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+
+	 using malloc
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+
+    char *t = malloc(strlen(s) + 1);
+    if (t == NULL)
+    {
+        return 1;
+    }
+
+    for (int i = 0, n = strlen(s); i < n + 1; i++)
+    {
+        t[i] = s[i];
+    }
+
+    if (strlen(t) > 0)
+    {
+        t[0] = toupper(t[0]);
+    }
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+
+    free(t);
+}
+
+------- ENTENDIMENTO
+
+ENTEND. FUNDAMENTO 1
+#include <stdlib.h>
+
+void *malloc(size_t size);
+Think of void * as meaning the address of any type of value in memory. 
+Think of size_t as a long.
+
+DESCRIPTION:
+
+This function dynamically allocates size contiguous bytes of memory
+(on the heap) that can be used to store any type of values.
+
+RETURN VALUE:
+This function returns the address of the first byte of memory 
+allocated or NULL in cases of error (as when insufficient memory 
+is available).
+
+EXEMPLE:
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char *s = malloc(4);
+    if (s == NULL)
+    {
+        return 1;
+    }
+
+    s[0] = 'h';
+    s[1] = 'i';
+    s[2] = '!';
+    s[3] = '\0';
+    printf("%s\n", s);
+
+    free(s);
+    return 0;
+}
+
+RESOLUÇÃO +++++++++
+
+We create a new variable, t, of the type char *, with char *t. 
+Now, we want to point it to a new chunk of memory that’s large
+ enough to store the copy of the string. With malloc, we allocate
+ some number of bytes in memory (that aren’t already used to store
+ other values), and we pass in the number of bytes we’d like to mark
+ for use. We already know the length of s, and we add 1 to that for
+ the terminating null character. So, our final line of code is 
+char *t = malloc(strlen(s) + 1);.
+
+Then, we copy each character, one at a time, with a for loop. 
+We use i < n + 1, since we actually want to go up to n, the length
+ of the string, to ensure we copy the terminating character in the
+ string. In the loop, we set t[i] = s[i], copying the characters.
+ While we could use *(t+i) = *(s+i) to the same effect, it’s 
+arguably less readable.
+
+Now, we can capitalize just the first letter of t.
+
+------------------------------------------------------------------------
+
+MEMORY LEYOUT
+
+Within our computer’s memory, the different types of data that need
+ to be stored for our program are organized into different sections:
+
+1. MACHINE CODE:
+
+The machine code section is our compiled program’s binary code. 
+When we run our program, that code is loaded into the “top” of memory.
+Just below, or in the next part of memory, are global variables we 
+declare in our program.
+
+2. HEAP:
+
+The heap section is an empty area from where malloc can get free
+ memory for our program to use. As we call malloc, we start 
+allocating memory from the top down.
+
+3. THE STACK:
+The stack section is used by functions in our program as they are 
+called, and grows upwards.For example, our main function is at the 
+very bottom of the stack and has the local variables x and y. 
+
+4. SWAP:
+
+The swap function, when it’s called, has its own area of memory 
+that’s on top of main’s, with the local variables a, b, and tmp:
+
+
+==========================
+
+FILE I/O:
+
+FILE: data type that come with C.
+
+FILE *file = fopen("phonebook.cvs", "a");
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+=======
+
+
+TRABALHANDO COM ARQUIVO:
+
+
+int main(void)
+{
+    FILE *file = fopen("phonebook.csv", "a");
+
+    if (file == NULL)
+    {
+        return 1;
+    }
+
+    char *name = get_string("Name: ");
+    char *number = get_string("Number: ");
+
+    fprintf(file, "%s,%s\n", name, number);
+
+    fclose(file);
+}
+
+
+fopen is a new function we can use to open a file. It will return
+ a pointer to a new type, FILE, that we can read from and write to.
+ The first argument is the name of the file, and the second argument
+ is the mode we want to open the file in (r for read, w for write, and
+ a for append, or adding to).
+We’ll add a check to exit if we couldn’t open the file for some reason.
+After we get some strings, we can use fprintf to print to a file.
+Finally, we close the file with fclose.
+
+
+SUBPROBLEMA: BITMAP
+
+- A 24-bit BMP file
+-also contains some “metadata,”
+- hat metadata is stored at the beginning of the file in the form of two data 
+structures generally referred to as “headers,”.
+- Notice that you could represent a bitmap as a 2-dimensional array of pixels
+- where the image is an array of rows, each row is an array of pixels
+
+Obs: dicas
+>  And we could just remember that the byte at 
+array[i] represents one thing, while the byte at 
+array[j] represents another.
+
+>Rather than think of some file as one long sequence of bytes, we can instead
+ think of it as a sequence of structs.
+
+IMAGE FILTERING:
+
+Grayscale:
+
+- So to convert a pixel to grayscale,
+ we just need to make sure the red, green,
+ and blue values are all the same value.
+
+
+ENTENDENDO O FREAD 
+#include <stdio.h>
+
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+Think of void * as representing the address of the first byte of any type of data. Think of size_t as a long.
+
+DESCRIPTION
+less comfortable
+This function reads data from a file that has been opened via fopen. It expects as input:
+
+ptr, which is the address (of the first byte) of memory into which to read the data,
+size, which is the size (in bytes) of the type of data to read,
+nmemb, which is the number of those types to read at once, and
+stream, which is the pointer to a FILE returned by fopen.
+For instance, if reading one char at a time, size would be sizeof(char) (i.e., 1), and nmemb would be 1.
+
+FILE POINTERS
+
+-the abulity to read data from and write data to files is the primary means of
+storing persistent data, data that does not disappear when your program stops 
+running.
+
+- the abstraction of files that C provides is implemented in a data structure
+know as a FILE.
+
+- the file manipulation functions all live in stdio.h
+> all of them accept FILE* as one of their parameters, except for the function fopen()
+which is used to get a file pointer in the first place.
+
+- some of the most common file input/output(I/O) functions that we will be working with are:
+
+fopen(); fclose(); fgetc(); fputc(); fread(); fwrite();
+
+
+- fopen():
+> opens a file and returns a file pointer to it.
+> always check the return value to make sure you dont get back NULL
+
+EXEMPLO:
+
+	FILE* ptr = fopen(<filename>, <operation>);
+
+ptr = generic name for file pointer
+<operation> can be "r", "w", "a".
+
+if you use fopen and "w" for a file that already exist, fopen will are
+overwrite all entire file, deleting any information previusly.
+
+if you open it for appending "a"m it will go to the end of
+the file, and then will start writing from there.
+
+
+- fclose():
+> closes the file pointed to by the given file pointer.
+> fclose(<nameoffilepointer>)
+
+- fgetc():
+> reads and returns the next character from the file pointed to
+> the operation of the file pointer passed in as a parameter must
+be "r" for read, or will siffer an error; the fopen must be 
+opened for read.
+
+char ch = fgetc(<filepointer>)
+
+HOW READ AND IMEDIATLY PRINT CHARACTER IN THE SCREEN:
+
+- char ch;
+while((ch = fgetc(ptr)) != EOF) 
+//ptr is a file opened previously
+// EOF is defined in stdio.h; means end of file character
+{
+	printf("%c", ch);
+}
+
+- fputc():
+> writes or appends the specified chatacter to the pointed-to file.
+> note: the operation of the file pointer passed in as a parameter
+must be "w" for write or "a" for append, or will have a error.
+
+fputc('A', ptr2);
+// ptr2 is a file opened previuously
+
+
+- fread():
+> reads <qty> units of size <size> from the file pointed to 
+and stores them in memory in a buffer(usually an array) pointed
+to by <buffer>; the first parameter in fread is a pointer to the location 
+and memory where we want to store the information.
+> the operation of the file pointer passed in as a parameter must
+be "r" for read, or you will have a error.
+
+exemplo:
+
+int arr[10];
+fread(arr, sizeof(int), 10, ptr);
+
+exemplo2:
+
+
+FILE *f = fopen("ptr", "r");
+double* arr2 = malloc(sizeof(double) * 80);
+fread(arr2, sizeof(double), 80, f);
+
+
+- fwrite():
+> writes <qty> units of size <size> to the file pointed to by reading
+them from a buffer(usually an array) pointed to by <buffer>.
+> note: the operation of the file pointer passed in as a parameter 
+must be "w" for write or "a" for append.
+
+// aqui a função está coletando informação de arr e escrevendo em ptr
+int arr[10]; // essa declaração reseva 40bytes de memoria para arr.
+fwrite(arr, sizeof(int), 10, ptr);
+
